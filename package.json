@@ -1,0 +1,24 @@
+{
+  "name": "node_newapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./api/api.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mariadb": "^3.0.0",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.7.3",
+    "nodemon": "^2.0.15",
+    "request": "^2.88.2",
+    "sequelize": "^6.19.0"
+  }
+}
