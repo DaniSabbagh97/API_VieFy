@@ -22,10 +22,14 @@ module.exports = (express, config, checkToken, Empresas) => {
         res.json(response)
     })
 
+    router.get('/obtenerEmpresa',checkToken, async (req, res, next) => { 
+        const response = await Empresas.getEmpresas(req.user)
+        res.json(response)
+    })
     return router
 }
 
-// POST http://servidor/api/empresas
+// POST http://servidor/api/empresas/obtenerEmpresa
 // http://servidor/api/empresas
 
 /**
