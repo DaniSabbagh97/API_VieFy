@@ -16,11 +16,16 @@ module.exports = (database, sequelize) => {
     telefono: DataTypes.STRING,
     rol: DataTypes.STRING,
     rol_juego: DataTypes.STRING,
-    id_clase:DataTypes.STRING,//CAMBIAR A INTEGER
-    id_empresa: DataTypes.STRING,//CAMBIAR A INTEGER
+    id_clase:DataTypes.INTEGER,//CAMBIAR A INTEGER
+    id_empresa: DataTypes.INTEGER,//CAMBIAR A INTEGER
     salario:DataTypes.STRING,
     confirmado: DataTypes.INTEGER,
     isActive: DataTypes.INTEGER,
+    pdf:DataTypes.STRING,
+    isProfe:{
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     id_propiedades: {
       type: DataTypes.INTEGER,
       defaultValue: 0

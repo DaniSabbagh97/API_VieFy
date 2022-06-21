@@ -35,7 +35,6 @@ module.exports = (EmpresasModel) => {
             })
            
             empresa.pdfString = JSON.parse(empresa.pdfString)
-            empresa.pdf=[]
            // console.log(empresa)
             return empresa
         }
@@ -52,6 +51,20 @@ module.exports = (EmpresasModel) => {
             
             // console.log(user.id_user)
             return true
+        }
+
+        async getEmpresas(usuario){
+            const clase = usuario.id_clase
+            console.log(clase)
+            const empresas = await EmpresasModel.findAll({
+                where: {
+                    id_clase:1//CAMBIAR
+                }
+            })
+           // empresas.pdfString = JSON.parse(empresas.pdfString)
+            console.log("PUTAAAAAA MIERDA QUE LE ENVÍO UN NO STRING Y SE RALLA")
+            console.log(empresas)
+            return empresas
         }
 
        

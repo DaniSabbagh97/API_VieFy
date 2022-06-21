@@ -48,6 +48,10 @@ const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize
 const Empresas = require('./../empresas/Empresas')(EmpresasModel)
 const empresasRoutes = require('./routes/empresas.routes')(express, config, checkToken, Empresas)
 
+//SOLICITUDES
+const SolicitudModel = require('./../solicitudes/SolicitudModel')(database, sequelize)
+const Solicitudes = require('./../solicitudes/Solicitudes')(SolicitudModel)
+const solicitudRoutes = require('./routes/solicitudes.routes')(express, config, checkToken, Solicitudes)
 
 
 // AUTH
@@ -66,6 +70,7 @@ app.use('/api/test', testRoutes)
 app.use('/api/historicoCuentaParticulares', historicoCuentaParticularesRoutes)
 app.use('/api/propiedades', propiedadesRoutes)
 app.use('/api/empresas', empresasRoutes)
+app.use('/api/solicitudes', solicitudRoutes)
 
 app.use(errorHandler)
 

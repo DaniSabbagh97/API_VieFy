@@ -75,10 +75,30 @@ router.post('/registrarLocal', checkToken, async (req, res, next) => {
     return response
   })
 
+  router.post('/pdf', checkToken, async (req, res, next) => {
+    const response = await User.insertPDF(req.body, req.user)
+    res.json(response)
+})
+
+/*router.get('/getPdf', checkToken, async (req, res, next) => {
+    const response = await User.getPDF(req.user)
+    res.json(response)
+})*/
+
+router.delete('/borrar', async (req, res, next) => {
+  console.log('borrando usuario')
+  console.log(req.body)
+  const response = await User.borrar(req.body)
+  
+  res.json(response)
+})
+
+
+
   return router
 }
 
-// POST http://servidor/api/users/profile
+// POST http://servidor/api/users/
 // http://servidor/api/users
 
 /**

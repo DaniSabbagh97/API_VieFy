@@ -17,9 +17,8 @@ module.exports = (database, sequelize) => {
     slogan: DataTypes.STRING,
     anuncio: DataTypes.STRING,
     cuerpoAnuncio: DataTypes.STRING,
-    pdf: DataTypes.BLOB,
     pdfString: DataTypes.STRING,
-    charpdf: DataTypes.STRING
+    id_clase:DataTypes.INTEGER
 }, {
     sequelize: database,
     timestamps: false,
