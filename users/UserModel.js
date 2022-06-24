@@ -14,10 +14,15 @@ module.exports = (database, sequelize) => {
     contrasenia: DataTypes.STRING,
     expediente: DataTypes.INTEGER,
     telefono: DataTypes.STRING,
+    imagen: DataTypes.STRING,
     rol: DataTypes.STRING,
     rol_juego: DataTypes.STRING,
-    id_clase:DataTypes.INTEGER,//CAMBIAR A INTEGER
-    id_empresa: DataTypes.INTEGER,//CAMBIAR A INTEGER
+    id_clase:{
+      type:DataTypes.INTEGER,
+     /* defaultValue: 0*/},
+    id_empresa: {
+      type:DataTypes.INTEGER,
+    /* defaultValue: 0*/},//CAMBIAR A INTEGER
     salario:DataTypes.STRING,
     confirmado: DataTypes.INTEGER,
     isActive: DataTypes.INTEGER,
@@ -29,7 +34,8 @@ module.exports = (database, sequelize) => {
     id_propiedades: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    } 
+    }
+    
     
   }, {
     sequelize: database,

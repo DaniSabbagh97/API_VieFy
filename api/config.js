@@ -1,7 +1,7 @@
 module.exports = {
   secretKey: 'tontinTimidin',
   port: 8080,
-  tokenExpireSeconds: 604800,
+  tokenExpireSeconds: 604800 ,//31536000
   database: {
     username: "pfg_maesebit",
     password: "a1234a",

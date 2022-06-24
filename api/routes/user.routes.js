@@ -25,6 +25,12 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
     res.json(response)//devuelto en json
   })
 
+  router.post('/putIdclase', checkToken, async (req, res, next) => {
+    const response = await User.ponerIdClase(req.body.clave,req.user)
+    res.json(response)
+
+  })
+
   router.get('/profile/test', checkToken, async (req, res, next) => {
     console.log('getting user')
     const salarioAutonomo = await salario(req.user.expediente)

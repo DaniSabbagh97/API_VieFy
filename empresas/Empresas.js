@@ -58,7 +58,7 @@ module.exports = (EmpresasModel) => {
             console.log(clase)
             const empresas = await EmpresasModel.findAll({
                 where: {
-                    id_clase:1//CAMBIAR
+                    id_clase:clase
                 }
             })
            // empresas.pdfString = JSON.parse(empresas.pdfString)

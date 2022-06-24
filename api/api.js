@@ -28,9 +28,10 @@ const HistoricoCuentaParticulares = require('./../historicoCuentaParticulares/Hi
 const historicoCuentaParticularesRoutes = require('./routes/historicoCuentaParticulares.routes')(express, config, checkToken, HistoricoCuentaParticulares)
 
 // USER
+const ClasesModel = require('./../clases/ClasesModel')(database, sequelize)
 const UserModel = require('./../users/UserModel')(database, sequelize)
 const TestModel = require('./../test/TestModel')(database, sequelize)
-const User = require('./../users/User')(UserModel,TestModel)
+const User = require('./../users/User')(UserModel,TestModel, ClasesModel)
 const userRoutes = require('./routes/user.routes')(express, config, checkToken, User, HistoricoCuentaParticulares)
 
 // TEST
@@ -53,6 +54,11 @@ const SolicitudModel = require('./../solicitudes/SolicitudModel')(database, sequ
 const Solicitudes = require('./../solicitudes/Solicitudes')(SolicitudModel)
 const solicitudRoutes = require('./routes/solicitudes.routes')(express, config, checkToken, Solicitudes)
 
+//CLASES
+
+const Clases = require('./../clases/Clases')(ClasesModel)
+const clasesRoutes = require('./routes/clases.routes')(express, config, checkToken, Clases)
+
 
 // AUTH
 const Auth = require('./../auth/Auth')(UserModel, config)
@@ -71,6 +77,7 @@ app.use('/api/historicoCuentaParticulares', historicoCuentaParticularesRoutes)
 app.use('/api/propiedades', propiedadesRoutes)
 app.use('/api/empresas', empresasRoutes)
 app.use('/api/solicitudes', solicitudRoutes)
+app.use('/api/clases', clasesRoutes)
 
 app.use(errorHandler)
 
