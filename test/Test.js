@@ -31,6 +31,7 @@ module.exports = (TestModel, UserModel, testResult) => {
             })
                 await UserModel.update({
                     isActive: true,
+                    rol_juego: test.Rol
         },{
             where:{
                 id_user:test.id_user

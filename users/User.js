@@ -130,6 +130,19 @@ module.exports = (UserModel,TestModel,ClasesModel) => {
       console.log(user.id_user)
       return true
     }
+
+    async getListUsers(clase){
+      console.log(clase.id_clase)
+      console.log("BBBBBBBBBBB")
+      const usuarios = await UserModel.findAll({
+        where: {
+          id_clase:clase.id_clase
+        }
+      })
+      console.log("AAAAAAAAAAAAAA")
+      console.log(usuarios)
+      return usuarios
+    }
     
     async ponerIdClase(clave, user){
       
@@ -143,6 +156,7 @@ module.exports = (UserModel,TestModel,ClasesModel) => {
       console.log(clave)
       
       if(clase){
+        
         await UserModel.update({
           id_clase:clase.id_clase
         },{
@@ -152,10 +166,10 @@ module.exports = (UserModel,TestModel,ClasesModel) => {
           
         })
         console.log("CORRECTO")
-        return true
+        return clase
       }else{
         console.log("INCORRECTO")
-        return false
+        
       }
       
     }

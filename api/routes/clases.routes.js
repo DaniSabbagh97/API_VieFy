@@ -4,7 +4,7 @@ module.exports = (express, config, checkToken, Clases) => {
 
     router.get('/getClases', checkToken, async (req, res, next) => {
 
-        const response = await Clases.getClases()
+        const response = await Clases.getClases(req.user)
         res.json(response)
 
         console.log(response)
@@ -17,6 +17,14 @@ module.exports = (express, config, checkToken, Clases) => {
         console.log(response)
 
     })
+    router.post('/updateUsos', checkToken, async (req, res, next) => {
+
+        const response = await Clases.updateUsos(req.body)
+        res.json(response)
+        console.log(response)
+
+    })
+    
 
     return router
 

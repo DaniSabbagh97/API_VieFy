@@ -3,7 +3,7 @@ module.exports = (express, config, User, Test)=>{
 
     router.post('/registerTest', checkToken, async (req, res, next) => {
         console.log('registering test')
-
+        
         const response = await Test.createTest(req.body)
 
         res.json(response)

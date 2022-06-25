@@ -99,6 +99,14 @@ router.delete('/borrar', async (req, res, next) => {
   res.json(response)
 })
 
+router.post('/getListUsers', checkToken, async (req, res, next) => {
+  console.log('consultado usuarios por clase')
+
+  const response = await User.getListUsers(req.body)
+  res.json(response)
+
+})
+
 
 
   return router
