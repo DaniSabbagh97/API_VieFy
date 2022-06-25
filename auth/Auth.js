@@ -21,7 +21,12 @@ module.exports = (UserModel, config) => {
       
       if (dbUser) { // validated
         
-        const token = jwt.sign(dbUser, config.secretKey, { expiresIn: config.tokenExpireSeconds })//elegir a donde va desde el login en la API
+        const tokenUser = {...dbUser}
+        delete tokenUser.pdf
+        delete tokenUser.imagen
+
+
+        const token = jwt.sign(tokenUser, config.secretKey, { expiresIn: config.tokenExpireSeconds })//elegir a donde va desde el login en la API
         
         
         console.log(token)

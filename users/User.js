@@ -29,9 +29,10 @@ module.exports = (UserModel,TestModel,ClasesModel) => {
         rol: user.rol,
         rol_juego:user.rol_juego,
         confirmado:user.confirmado,
-        imagen: JSON.stringify(user.imagen),
+        imagen: user.imagen,
         isProfe:user.isProfe
       }).then(user => id =user.id_user)
+
       console.log(id)
       return id
       

@@ -67,7 +67,9 @@ const authRoutes = require('./routes/auth.routes')(express, config, checkToken, 
 const app = express()
 app.enable('trust proxy')
 
-app.use(express.json())
+app.use(express.json({
+  limit: "100mb"
+}))
 
 app.use(crossDomain)
 app.use('/api/auth', authRoutes)
