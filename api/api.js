@@ -59,6 +59,10 @@ const solicitudRoutes = require('./routes/solicitudes.routes')(express, config, 
 const Clases = require('./../clases/Clases')(ClasesModel)
 const clasesRoutes = require('./routes/clases.routes')(express, config, checkToken, Clases)
 
+//PRACTICAS
+const PracticasModel = require('./../practicas/PracticasModel')(database, sequelize)
+const Practicas = require('./../practicas/Practicas')(PracticasModel)
+const practicasRoutes = require('./routes/practicas.routes')(express, config, checkToken, Practicas)
 
 // AUTH
 const Auth = require('./../auth/Auth')(UserModel, config)
@@ -80,6 +84,7 @@ app.use('/api/propiedades', propiedadesRoutes)
 app.use('/api/empresas', empresasRoutes)
 app.use('/api/solicitudes', solicitudRoutes)
 app.use('/api/clases', clasesRoutes)
+app.use('/api/practicas', practicasRoutes)
 
 app.use(errorHandler)
 
