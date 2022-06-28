@@ -45,13 +45,13 @@ const Propiedades = require('./../propiedades/Propiedades')(PropiedadesModel, Te
 const propiedadesRoutes = require('./routes/propiedades.routes')(express, config, checkToken, Propiedades)
 
 //EMPRESAS
-const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize)
+const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize, UserModel)
 const Empresas = require('./../empresas/Empresas')(EmpresasModel)
 const empresasRoutes = require('./routes/empresas.routes')(express, config, checkToken, Empresas)
 
 //SOLICITUDES
-const SolicitudModel = require('./../solicitudes/SolicitudModel')(database, sequelize)
-const Solicitudes = require('./../solicitudes/Solicitudes')(SolicitudModel)
+const SolicitudModel = require('./../solicitudes/SolicitudModel')(database, sequelize, EmpresasModel, UserModel)
+const Solicitudes = require('./../solicitudes/Solicitudes')(SolicitudModel, UserModel, EmpresasModel)
 const solicitudRoutes = require('./routes/solicitudes.routes')(express, config, checkToken, Solicitudes)
 
 //CLASES

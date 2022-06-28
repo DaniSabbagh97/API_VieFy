@@ -18,7 +18,8 @@ module.exports = (database, sequelize) => {
     },{
         sequelize: database,
         timestamps: false,
-        modelName: "clases"
+        modelName: "clases",
+        freezeTableName: true,
     })
 
     return Clases

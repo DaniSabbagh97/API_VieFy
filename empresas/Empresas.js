@@ -1,4 +1,4 @@
-module.exports = (EmpresasModel) => {
+module.exports = (EmpresasModel, UserModel) => {
 
     class Empresas{
         async get(){
@@ -7,19 +7,30 @@ module.exports = (EmpresasModel) => {
             return empresa
         }
 
-        async crearEmpresa(empresa){
-            await EmpresasModel.create({
+        async crearEmpresa(empresa, user){
+            const dbEmpresa = await EmpresasModel.create({
               nombre: empresa.nombre,  
               dueño: empresa.dueño,  
               SaldoInicial: empresa.SaldoInicial,  
               SaldoActual: empresa.SaldoActual,  
               PagoLocal: empresa.PagoLocal,  
               id_propiedad: empresa.id_propiedad,  
+              id_clase: user.id_clase,
               slogan: empresa.slogan,  
               anuncio: empresa.anuncio,  
               cuerpoAnuncio: empresa.cuerpoAnuncio,  
 
-            })
+            })//Aqui update users>idEmpresa
+
+            if (empresa) {
+                UserModel.update({
+                    id_empresa: dbEmpresa.id_empresa
+                }, {
+                    where: {
+                        id_user: user.id_user
+                    }
+                })
+            }
             return true
         }
 

@@ -15,6 +15,14 @@ module.exports = (express, config, checkToken, Solicitudes) => {
         res.json(response)
     })
 
+    router.get('/getListaSolicitudes', checkToken, async (req, res, next) => {
+        console.log('Getting Solicitudes')
+        const response = await Solicitudes.getLista(req.user)
+        res.json(response)
+
+
+    })
+
 
 
 

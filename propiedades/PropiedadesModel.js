@@ -33,7 +33,8 @@ Propiedades.init({
 },{
     sequelize: database,
     timestamps: false,
-    modelName: "propiedades"
+    modelName: "propiedades",
+    freezeTableName: true,
 })
 return Propiedades
 }

@@ -22,7 +22,8 @@ module.exports = (database, sequelize) => {
 }, {
     sequelize: database,
     timestamps: false,
-    modelName: "empresas"
+    modelName: "empresas",
+    freezeTableName: true,
 })
 return Empresas
 

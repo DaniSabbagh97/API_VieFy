@@ -8,7 +8,7 @@ module.exports = (express, config, checkToken, Empresas) => {
     })
     
     router.post('/insertarEmpresa', checkToken, async (req, res, next) => {
-        const response = await Empresas.crearEmpresa(req.body)
+        const response = await Empresas.crearEmpresa(req.body, req.user)
         res.json(response)
     })
 

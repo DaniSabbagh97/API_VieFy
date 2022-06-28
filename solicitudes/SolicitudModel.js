@@ -1,4 +1,4 @@
-module.exports = (database, sequelize) => {
+module.exports = (database, sequelize, EmpresasModel, UserModel) => {
 
     const { DataTypes, Model } = sequelize
     class Solicitudes extends Model {}
@@ -16,7 +16,22 @@ module.exports = (database, sequelize) => {
     },{
         sequelize: database,
         timestamps: false,
-        modelName: "solicitudes"
+        modelName: "solicitudes",
+        freezeTableName: true,
+    })
+
+    EmpresasModel.hasMany(Solicitudes, {
+        foreignKey: 'id_empresa'
+    })
+    Solicitudes.belongsTo(EmpresasModel, {
+        foreignKey: 'id_empresa'
+    })
+
+    UserModel.hasMany(Solicitudes, {
+        foreignKey: 'id_user'
+    })
+    Solicitudes.belongsTo(UserModel, {
+        foreignKey: 'id_user'
     })
 
     return Solicitudes
