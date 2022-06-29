@@ -7,7 +7,7 @@ var id
 
 //const res = require('express/lib/response');
 
-module.exports = (UserModel,TestModel,ClasesModel) => {
+module.exports = (UserModel, TestModel, ClasesModel) => {
   
   class User {
     async get() {
@@ -206,7 +206,7 @@ module.exports = (UserModel,TestModel,ClasesModel) => {
         
         return true;
       }*/
-      
+
     }
     
     

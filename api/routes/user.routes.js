@@ -7,7 +7,7 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
     const response = await User.get(req.body)
     res.json(response)
   })
-//
+  
   router.get('/profile', checkToken, async (req, res, next) => {
     console.log('getting user')
     /*const salarioAutonomo = await salario(req.user.expediente)

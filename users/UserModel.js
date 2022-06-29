@@ -23,7 +23,7 @@ module.exports = (database, sequelize) => {
     id_empresa: {
       type:DataTypes.INTEGER,
     /* defaultValue: 0*/},//CAMBIAR A INTEGER
-    salario:DataTypes.STRING,
+    salario:DataTypes.FLOAT,
     confirmado: DataTypes.INTEGER,
     isActive: DataTypes.INTEGER,
     pdf:DataTypes.STRING,

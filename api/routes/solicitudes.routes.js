@@ -19,17 +19,29 @@ module.exports = (express, config, checkToken, Solicitudes) => {
         console.log('Getting Solicitudes')
         const response = await Solicitudes.getLista(req.user)
         res.json(response)
+    })
 
+    router.post('/contratar', checkToken, async (req, res, next) => {
+        try {
+            const response = await Solicitudes.contratar(req.body)
+            res.json(response)
+        } catch(e) {
+            res.status(400).json({ success: false, error: e.message })
+        }
+    })
 
+    router.post('/borrarSolicitud', checkToken, async (req, res, next) => {
+        try {
+            const response = await Solicitudes.eliminar(req.body)
+            res.json(response)
+        } catch(e) {
+            res.status(400).json({ success: false, error: e.message })
+        }
     })
 
 
 
-
-
     return router
-
-
 }
 // POST http://servidor/api/solicitudes
 // http://servidor/api/solicitudes

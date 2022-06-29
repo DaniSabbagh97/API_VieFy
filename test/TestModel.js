@@ -29,7 +29,7 @@ Test.init({
 }, {
     sequelize: database,
     timestamps: false,
-    modelName: "test",
+    modelName: "tests",
     freezeTableName: true,
 })
 return Test
