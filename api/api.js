@@ -46,7 +46,7 @@ const propiedadesRoutes = require('./routes/propiedades.routes')(express, config
 
 //EMPRESAS
 const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize, UserModel)
-const Empresas = require('./../empresas/Empresas')(EmpresasModel)
+const Empresas = require('./../empresas/Empresas')(EmpresasModel, UserModel)
 const empresasRoutes = require('./routes/empresas.routes')(express, config, checkToken, Empresas)
 
 //SOLICITUDES
