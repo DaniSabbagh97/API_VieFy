@@ -2,11 +2,14 @@ module.exports = (express, config, checkToken, Auth) => {
   const router = express.Router()
 
   router.post('/', async (req, res, next) => {
-    console.log('getting token')
-    const response = await Auth.getToken(req.body)
-    console.log(response)
-    res.json(response)
-    
+    try {
+      console.log('getting token')
+      const response = await Auth.getToken(req.body)
+      console.log(response)
+      res.json(response)
+    } catch(e) {
+      next(e)
+    }
   })
 
   return router

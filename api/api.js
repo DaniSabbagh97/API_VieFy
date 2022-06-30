@@ -64,6 +64,11 @@ const PracticasModel = require('./../practicas/PracticasModel')(database, sequel
 const Practicas = require('./../practicas/Practicas')(PracticasModel)
 const practicasRoutes = require('./routes/practicas.routes')(express, config, checkToken, Practicas)
 
+// ANTALES
+const AntalesModel = require('./../antales/AntalesModel')(database, sequelize, EmpresasModel, UserModel)
+const Antales = require('./../antales/Antales')(AntalesModel, EmpresasModel, UserModel)
+const antalesRoutes = require('./routes/antales.routes')(express, checkToken, Antales)
+
 // AUTH
 const Auth = require('./../auth/Auth')(UserModel, config)
 const authRoutes = require('./routes/auth.routes')(express, config, checkToken, Auth)
@@ -85,6 +90,7 @@ app.use('/api/empresas', empresasRoutes)
 app.use('/api/solicitudes', solicitudRoutes)
 app.use('/api/clases', clasesRoutes)
 app.use('/api/practicas', practicasRoutes)
+app.use('/api/antales', antalesRoutes)
 
 app.use(errorHandler)
 

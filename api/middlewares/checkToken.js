@@ -4,7 +4,6 @@ module.exports = (req, res, next) => {
   console.log('checking token')
   const token = req.headers['authorization'] || req.body?.token || req.query?.token
   
-  console.log(token)
   jwt.verify(token, config.secretKey, (err, decoded) => {
     if (err) {
       err.status = 401

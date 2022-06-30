@@ -9,3 +9,4 @@ module.exports = {
     host: "195.235.211.197",
   },
 }
+// mysql -h 195.235.211.197 -u pfg_maesebit -p
