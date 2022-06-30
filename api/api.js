@@ -60,8 +60,8 @@ const Clases = require('./../clases/Clases')(ClasesModel)
 const clasesRoutes = require('./routes/clases.routes')(express, config, checkToken, Clases)
 
 //PRACTICAS
-const PracticasModel = require('./../practicas/PracticasModel')(database, sequelize)
-const Practicas = require('./../practicas/Practicas')(PracticasModel)
+const PracticasModel = require('./../practicas/PracticasModel')(database, sequelize, UserModel)
+const Practicas = require('./../practicas/Practicas')(PracticasModel, UserModel)
 const practicasRoutes = require('./routes/practicas.routes')(express, config, checkToken, Practicas)
 
 // ANTALES

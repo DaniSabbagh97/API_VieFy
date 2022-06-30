@@ -1,12 +1,9 @@
-module.exports = (PracticasModel) =>{
-
+module.exports = (PracticasModel, UserModel) =>{
+    
     class Practicas{
-
-
-
+        
         async subirPractica(practica, profe){
             const practicas = await PracticasModel.create({
-                
                 nombrePractica: practica.nombrePractica,
                 numEjercicios: practica.numEjercicios,
                 valorTotal: practica.valorTotal,
@@ -15,10 +12,27 @@ module.exports = (PracticasModel) =>{
                 id_profesor: profe.id_user,
                 pdf: JSON.stringify(practica.pdf),
                 beneficio: practica.beneficio
-
             })
-
             return true
+        }
+
+        async get(user) {
+            try {
+                const practicas = await PracticasModel.findAll({
+                    where: {
+                        id_user: user.id_user
+                    },
+                    include: [{
+                        model: UserModel,
+                        attribute: {
+                            exclude: ['contrasenia', 'pdf']
+                        }
+                    }]
+                })
+                return practicas
+            } catch(e) {
+                throw e
+            }
         }
     }
     return new Practicas()
