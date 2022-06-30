@@ -13,7 +13,7 @@ module.exports = (express, checkToken, Antales) => {
 
     router.post('/', checkToken, async (req, res, next) => {
         try {
-            const response = await Antales.create(req.body.antal, req.user)
+            const response = await Antales.create(req.body, req.user)
             res.json(response)
         } catch(e) {
             next(e)
