@@ -1,4 +1,5 @@
-module.exports = (EmpresasModel, UserModel) => {
+const { setSalarioEmpresa } = require('./../utils/setSalario')
+module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel) => {
 
     class Empresas{
         async get(){
@@ -19,9 +20,7 @@ module.exports = (EmpresasModel, UserModel) => {
               slogan: empresa.slogan,  
               anuncio: empresa.anuncio,  
               cuerpoAnuncio: empresa.cuerpoAnuncio,  
-
-            })//Aqui update users>idEmpresa
-
+            })
             if (empresa) {
                 UserModel.update({
                     id_empresa: dbEmpresa.id_empresa
@@ -29,6 +28,15 @@ module.exports = (EmpresasModel, UserModel) => {
                     where: {
                         id_user: user.id_user
                     }
+                })
+                const salario = await setSalarioEmpresa(user.expediente)
+                HistoricoCuentaEmpresasModel.create({
+                    Empresa: empresa.id_empresa,
+                    Saldo: salario,
+                    Gasto: 0,
+                    Comentario: 'Saldo inicial',
+                    tipo_gasto: null,
+                    Hora: new Date(),
                 })
             }
             return true

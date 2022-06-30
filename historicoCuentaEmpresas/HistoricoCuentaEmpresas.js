@@ -1,8 +1,8 @@
 module.exports = (HistoricoCuentaEmpresasModel) => {
 
-    class HistoricoCuentaParticulares {
+    class HistoricoCuentaEmpresas {
         async get() {
-          console.log('class get HistoricoCuentaParticulares')
+          console.log('class get HistoricoCuentaEmpresas')
           const hcp = await HistoricoCuentaEmpresasModel.findAll()
           return hcp
         }
@@ -29,5 +29,5 @@ module.exports = (HistoricoCuentaEmpresasModel) => {
         }
     }
 
-    return new HistoricoCuentaParticulares()
+    return new HistoricoCuentaEmpresas()
 }
