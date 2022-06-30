@@ -1,7 +1,7 @@
-const salario = require('./setSalario')
+const { setSalario } = require('./setSalario')
 module.exports = (t, exp) => {
     return new Promise( async (resolve, reject) => {
-       const s = await salario(exp)
+       const s = await setSalario(exp)
        console.log(s)
        console.log("ESTOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
        console.log(t.ImpB2)

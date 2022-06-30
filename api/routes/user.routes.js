@@ -1,4 +1,4 @@
-const salario = require('../../utils/setSalario')
+const { setSalario, setSalarioEmpresa } = require('../../utils/setSalario')
 module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares) => {
   const router = express.Router()
 
@@ -9,19 +9,8 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
   })
   
   router.get('/profile', checkToken, async (req, res, next) => {
-    console.log('getting user')
-    /*const salarioAutonomo = await salario(req.user.expediente)
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAA")
-    console.log(salarioAutonomo)*/
-
-    
     const response = await User.getProfile(req.user)//importante hacer
-    console.log(response)
-    /*const id = req.user.id_user
-    const a = await HistoricoCuentaParticulares.insertarSalarioInicial(req.user, salarioAutonomo)*/
-    //llamar a setSalario(response.getExpediente)
-    
-    console.log(response)//TODO OBTENER EXPEDIENTE PARA HACER EL CALCULO DE SALARIO Y SALARIO_EMPRESARIO 
+    //TODO OBTENER EXPEDIENTE PARA HACER EL CALCULO DE SALARIO Y SALARIO_EMPRESARIO 
     res.json(response)//devuelto en json
   })
 
@@ -32,20 +21,12 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
   })
 
   router.get('/profile/test', checkToken, async (req, res, next) => {
-    console.log('getting user')
-    const salarioAutonomo = await salario(req.user.expediente)
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAA")
-    console.log(salarioAutonomo)
-
-    
+    const salarioAutonomo = await setSalario(req.user.expediente)
     const response = await User.getProfile(req.user)//importante hacer
-    console.log(response)
     const id = req.user.id_user
     const a = await HistoricoCuentaParticulares.insertarSalarioInicial(req.user, salarioAutonomo)
-    //llamar a setSalario(response.getExpediente)
-    
-    console.log(response)//TODO OBTENER EXPEDIENTE PARA HACER EL CALCULO DE SALARIO Y SALARIO_EMPRESARIO 
-    res.json(response)//devuelto en json
+    //TODO OBTENER EXPEDIENTE PARA HACER EL CALCULO DE SALARIO Y SALARIO_EMPRESARIO 
+    res.json(response)
   })
 
   router.post('/register', async (req, res, next) => {

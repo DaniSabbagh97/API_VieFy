@@ -1,26 +1,25 @@
 module.exports = (database, sequelize) => {
     const { DataTypes, Model } = sequelize
-    class HistoricoCuentaParticulares extends Model {}
+    class HistoricoCuentaEmpresas extends Model {}
     
-    HistoricoCuentaParticulares.init({
-        id_historicoParticular :{
+    HistoricoCuentaEmpresas.init({
+        id_historico: {
             type:DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        id_user: DataTypes.INTEGER,
+        Empresa: DataTypes.INTEGER,
         Saldo: DataTypes.FLOAT,
-        Importe: DataTypes.FLOAT,
+        Gasto: DataTypes.FLOAT,
         Comentario: DataTypes.STRING,
         tipo_gasto: DataTypes.STRING,
         Hora: DataTypes.DATE,
-        
     }, {
         sequelize: database,
         timestamps: false,
-        modelName: "historicoCuentaParticulares",
+        modelName: "historicoCuentaEmpresas",
         freezeTableName: true,
     })
-    return HistoricoCuentaParticulares
+    return HistoricoCuentaEmpresas
     
 }

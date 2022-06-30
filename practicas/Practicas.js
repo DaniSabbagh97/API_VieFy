@@ -33,6 +33,7 @@ module.exports = (PracticasModel, UserModel) =>{
                         }
                     }]
                 })
+                practicas.forEach(p => p.pdf = JSON.parse(p.pdf))
                 return practicas
             } catch(e) {
                 throw e
