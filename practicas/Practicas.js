@@ -24,7 +24,7 @@ module.exports = (PracticasModel, UserModel) =>{
             try {
                 const practicas = await PracticasModel.findAll({
                     where: {
-                        id_user: user.id_user
+                        id_clase: user.id_clase
                     },
                     include: [{
                         model: UserModel,
