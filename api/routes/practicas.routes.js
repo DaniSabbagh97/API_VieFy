@@ -3,9 +3,12 @@ module.exports = (express, config, checkToken, Practicas) => {
     const router = express.Router()
 
     router.post('/subirPractica', checkToken, async (req, res, next) => {
-        const response = await Practicas.subirPractica(req.body, req.user)
-        res.json(response)
-        console.log(response)
+        try {
+            const response = await Practicas.subirPractica(req.body, req.user)
+            res.json(response)
+        } catch(e) {
+            next(e)
+        }   
     })
 
     router.get('/', checkToken, async (req, res, next) => {
