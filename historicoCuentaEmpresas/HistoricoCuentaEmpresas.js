@@ -12,18 +12,12 @@ module.exports = (HistoricoCuentaEmpresasModel) => {
               where: { 
                 id_user: user.id_user
                }
-
           })
-
           return historicoCuenta
-          
         }
 
         async insertarSalarioInicial(user, salarioAutonomo) {
-          console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAA')
-          
           await HistoricoCuentaEmpresasModel.create({
-            
             id_user: user.id_user,
             Saldo: salarioAutonomo,
             Gasto: 'NULL',
@@ -32,9 +26,7 @@ module.exports = (HistoricoCuentaEmpresasModel) => {
             Hora: new Date().toISOString(), 
           })
           return true
-          
         }
-        
     }
 
     return new HistoricoCuentaParticulares()
