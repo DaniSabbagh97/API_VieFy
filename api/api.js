@@ -78,6 +78,10 @@ const antalesRoutes = require('./routes/antales.routes')(express, checkToken, An
 const Auth = require('./../auth/Auth')(UserModel, config)
 const authRoutes = require('./routes/auth.routes')(express, config, checkToken, Auth)
 
+// GASTOS
+const GastosFijosModel = require('./../gastos/GastosFijosModel')(database, sequelize)
+
+
 const app = express()
 app.enable('trust proxy')
 
@@ -104,4 +108,4 @@ app.listen(config.port)
 console.log('API running in ', config.port)
 
 // TASKS
-const taskManager = require('./TaskManager')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel, PropiedadesModel)
+const taskManager = require('./TaskManager')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel, PropiedadesModel, GastosFijosModel)

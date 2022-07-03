@@ -6,38 +6,32 @@ module.exports = (
   UserModel,
   HistoricoCuentaEmpresasModel,
   HistoricoCuentaParticularesModel,
-  PropiedadesModel
+  PropiedadesModel,
+  GastosFijosModel
 ) => {
   class TaskManager {
     constructor() {
       this.crearTareaSemanal()
+      this.crearTareaMensual()
       // this.tester()
     }
 
     async tester() {
-      const empresa = await EmpresasModel.findByPk(1, {
-        attributes: {
-          exclude: ['pdfString'],
+      const gastosFijosEmpresarios = await GastosFijosModel.findAll({
+        where: {
+          rol: 'Empresario',
         },
-        include: [
-          {
-            model: PropiedadesModel,
-            as: 'propiedad',
-            attributes: {
-              exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre'],
-            },
-          },
-        ],
+        raw: true,
       })
-      console.log(empresa.toJSON())
+      console.log(gastosFijosEmpresarios)
     }
 
     crearTareaSemanal() {
-      console.log('Iniciando automatización de pago de nóminas y gastos semanales - Cada lunes a las 00:00')
+      console.log('Iniciando automatización de pago de nóminas y gastos mensuales - Cada lunes a las 00:00')
       this.job = new CronJob(
         '0 0 * * MON',
         async () => {
-          console.log('Pagando nóminas')
+          console.log('Nóminas y gastos mensuales')
           const users = await UserModel.findAll({
             // Alumnos que hayan completado el registro
             where: {
@@ -60,7 +54,7 @@ module.exports = (
           })
           for (const user of users) {
             if (user.id_empresa && empresa) {
-              //? Pago de nóminas
+              // * Pago de nóminas
               // actualizacíón de la empresa
               const empresa = await EmpresasModel.findByPk(user.id_empresa, {
                 attributes: {
@@ -97,7 +91,7 @@ module.exports = (
                   Hora: new Date(),
                 })
                 if (user.rol_juego == 'Empresario' && empresa.propiedad) {
-                  //? Gastos de empresarios
+                  // * Gastos de empresarios - Propiedades
                   empresa.SaldoActual -= empresa.propiedad.precio
                   await HistoricoCuentaEmpresasModel.create({
                     id_empresa: user.id_empresa,
@@ -112,8 +106,7 @@ module.exports = (
               }
             }
             if (user.propiedad) {
-              //? Gastos de particulares
-              // * Propiedades
+              // * Gastos de particulares - Propiedades
               user.salarioActual -= user.propiedad.precio
               await HistoricoCuentaParticularesModel.create({
                 id_user: user.id_user,
@@ -123,7 +116,7 @@ module.exports = (
                 tipo_gasto: 'Alquiler',
                 Hora: new Date(),
               })
-              // * Lujo
+              // * Gastos de particulares - Lujo
               user.salarioActual -= 100
               await HistoricoCuentaParticularesModel.create({
                 id_user: user.id_user,
@@ -133,7 +126,7 @@ module.exports = (
                 tipo_gasto: 'Lujo',
                 Hora: new Date(),
               })
-              // * Alimentación
+              // * Gastos de particulares - Alimentación
               const costeAlimentacion = (100 + user.propiedad.precio) * 0.2
               user.salarioActual -= costeAlimentacion
               await HistoricoCuentaParticularesModel.create({
@@ -147,7 +140,91 @@ module.exports = (
             }
             await user.save()
           }
-          console.log('Nóminas pagadas')
+          console.log('Nóminas y gastos mensuales terminados')
+        },
+        null,
+        true,
+        'Europe/Madrid'
+      )
+    }
+
+    crearTareaMensual() {
+      console.log('Iniciando automatización de pago anuales - día 1 de cada trimestre a las 01:00')
+      this.job = new CronJob(
+        '0 1 1 */3 *',
+        async () => {
+          console.log('Gastos trimestrales')
+          const gastosFijosEmpresarios = await GastosFijosModel.findAll({
+            where: {
+              rol: 'Empresario',
+            },
+            raw: true,
+          })
+          const gastosFijosAutonomos = await GastosFijosModel.findAll({
+            where: {
+              rol: 'Autonomo',
+            },
+            raw: true,
+          })
+          const users = await UserModel.findAll({
+            // Alumnos que hayan completado el registro
+            where: {
+              id_clase: { [Op.ne]: null },
+              id_propiedades: { [Op.ne]: null },
+              rol: 'Alumno',
+            },
+            include: [
+              {
+                model: PropiedadesModel,
+                as: 'propiedad',
+                attributes: {
+                  exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre'],
+                },
+              },
+            ],
+            attributes: {
+              exclude: ['pdf', 'imagen', 'expediente', 'nombre', 'apellidos', 'email', 'contrasenia'],
+            },
+          })
+          for (const user of users) {
+            if (user.rol_juego == 'Empresario' || user.rol_juego == 'Autonomo') {
+              const empresa = await EmpresasModel.findByPk(user.id_empresa, {
+                attributes: {
+                  exclude: ['pdfString'],
+                },
+              })
+              if (empresa && user.rol_juego == 'Empresario') {
+                // * Gastos de Empresarios
+                for (const gasto of gastosFijosEmpresarios) {
+                  empresa.SaldoActual -= gasto.importe
+                  await HistoricoCuentaEmpresasModel.create({
+                    id_empresa: user.id_empresa,
+                    Saldo: empresa.SaldoActual,
+                    Gasto: gasto.importe,
+                    Comentario: null,
+                    tipo_gasto: gasto.nombre,
+                    Hora: new Date(),
+                  })
+                }
+                empresa.save()
+              }
+              if (empresa && user.rol_juego == 'Autonomo') {
+                // * Gastos de Autónomos
+                for (const gasto of gastosFijosAutonomos) {
+                  empresa.SaldoActual -= gasto.importe
+                  await HistoricoCuentaEmpresasModel.create({
+                    id_empresa: user.id_empresa,
+                    Saldo: empresa.SaldoActual,
+                    Gasto: gasto.importe,
+                    Comentario: null,
+                    tipo_gasto: gasto.nombre,
+                    Hora: new Date(),
+                  })
+                }
+                empresa.save()
+              }
+            }
+          }
         },
         null,
         true,
