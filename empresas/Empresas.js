@@ -1,5 +1,6 @@
 const { setSalarioEmpresa } = require('./../utils/setSalario')
 const CronJob = require('cron').CronJob
+const { Op } = require("sequelize")
 
 module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel) => {
     
@@ -47,6 +48,7 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                             })
                         }
                     }   
+                    console.log('Nóminas pagadas')
                 },
                 null,
                 true,

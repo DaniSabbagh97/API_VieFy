@@ -1,5 +1,4 @@
 const encrypter = require('./../auth/encriptString')
-const { Op } = require("sequelize")
 const { QueryTypes } = require('sequelize')
 
 module.exports = (UserModel, TestModel, ClasesModel) => {
