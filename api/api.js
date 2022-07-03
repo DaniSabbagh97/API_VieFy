@@ -45,13 +45,13 @@ const Test = require('./../test/Test')(TestModel, UserModel)
 const testRoutes = require('./routes/test.routes')(express, config, checkToken, Test)
 
 // PROPIEDADES
-const PropiedadesModel = require('./../propiedades/PropiedadesModel')(database, sequelize)
+const PropiedadesModel = require('./../propiedades/PropiedadesModel')(database, sequelize, UserModel)
 const Propiedades = require('./../propiedades/Propiedades')(PropiedadesModel, TestModel)
 const propiedadesRoutes = require('./routes/propiedades.routes')(express, config, checkToken, Propiedades)
 
 //EMPRESAS
-const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize, UserModel)
-const Empresas = require('./../empresas/Empresas')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel)
+const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize, PropiedadesModel)
+const Empresas = require('./../empresas/Empresas')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel)
 const empresasRoutes = require('./routes/empresas.routes')(express, config, checkToken, Empresas)
 
 //SOLICITUDES
@@ -102,3 +102,6 @@ app.use(errorHandler)
 
 app.listen(config.port)
 console.log('API running in ', config.port)
+
+// TASKS
+const taskManager = require('./TaskManager')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel, PropiedadesModel)

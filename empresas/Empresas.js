@@ -1,60 +1,9 @@
 const { setSalarioEmpresa } = require('./../utils/setSalario')
-const CronJob = require('cron').CronJob
-const { Op } = require("sequelize")
 
-module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel) => {
+
+module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel) => {
     
     class Empresas{
-        
-        constructor() {
-            console.log('Iniciando automatización de pago de nóminas semanales - Cada lunes a las 00:00')
-            this.job = new CronJob(
-                '0 0 * * MON',
-                async () => {
-                    console.log('Pagando nóminas')
-                    const users = await UserModel.findAll({
-                        where: {
-                            [Op.and]: [ // salario distinto de null y mayor que cero, que tenga id_empresa
-                                { salario: { [Op.ne]: null } },
-                                { salario: { [Op.gt]: 0 } },
-                                { id_empresa: { [Op.ne]: null } }
-                            ]
-                        }
-                    })
-                    for (const user of users) {
-                        const empresa = await EmpresasModel.findByPk(user.id_empresa)
-                        if (empresa) {
-                            // actualizacíón de la empresa
-                            empresa.SaldoActual -= user.salario
-                            await empresa.save()
-                            await HistoricoCuentaEmpresasModel.create({
-                                id_empresa: user.id_empresa,
-                                Saldo: empresa.SaldoActual,
-                                Gasto: user.salario,
-                                Comentario: null,
-                                tipo_gasto: 'nomina',
-                                Hora: new Date(),
-                            })
-                            // actualizacíón del usuario
-                            user.saldoActual += user.salario
-                            await user.save()
-                            await HistoricoCuentaParticularesModel.create({
-                                id_user: user.id_user,
-                                Saldo: user.saldoActual,
-                                Importe: user.salario,
-                                Comentario: null,
-                                tipo_gasto: 'nomina',
-                                Hora: new Date()
-                            })
-                        }
-                    }   
-                    console.log('Nóminas pagadas')
-                },
-                null,
-                true,
-                'Europe/Madrid'
-            )
-        }
         
         async get(){
             console.log('Empresas')
