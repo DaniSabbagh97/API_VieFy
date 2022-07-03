@@ -36,7 +36,7 @@ const historicoCuentaEmpresasRoutes = require('./routes/historicoCuentaEmpresas.
 const ClasesModel = require('./../clases/ClasesModel')(database, sequelize)
 const UserModel = require('./../users/UserModel')(database, sequelize)
 const TestModel = require('./../test/TestModel')(database, sequelize)
-const User = require('./../users/User')(UserModel,TestModel, ClasesModel)
+const User = require('./../users/User')(UserModel, TestModel, ClasesModel)
 const userRoutes = require('./routes/user.routes')(express, config, checkToken, User, HistoricoCuentaParticulares)
 
 // TEST
@@ -51,7 +51,7 @@ const propiedadesRoutes = require('./routes/propiedades.routes')(express, config
 
 //EMPRESAS
 const EmpresasModel = require('./../empresas/EmpresasModel')(database, sequelize, UserModel)
-const Empresas = require('./../empresas/Empresas')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel)
+const Empresas = require('./../empresas/Empresas')(EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel)
 const empresasRoutes = require('./routes/empresas.routes')(express, config, checkToken, Empresas)
 
 //SOLICITUDES

@@ -34,8 +34,8 @@ module.exports = (database, sequelize) => {
     id_propiedades: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }
-    
+    },
+    saldoActual: DataTypes.FLOAT
     
   }, {
     sequelize: database,

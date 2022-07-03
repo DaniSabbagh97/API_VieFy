@@ -1,13 +1,11 @@
 const encrypter = require('./../auth/encriptString')
 const { Op } = require("sequelize")
 const { QueryTypes } = require('sequelize')
-const { Sequelize } = require('sequelize')
-const ClasesModel = require('../clases/ClasesModel')
-var id
 
 module.exports = (UserModel, TestModel, ClasesModel) => {
   
   class User {
+
     async get() {
       console.log('class User get')
       const users = await UserModel.findAll()
@@ -16,7 +14,7 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
     
     async createUser(user) {
       const passw = await encrypter(user.contrasenia)
-      await UserModel.create({
+      const dbUser = await UserModel.create({
         email: user.email,
         nombre: user.nombre,
         apellidos: user.apellidos,
@@ -28,9 +26,8 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
         confirmado:user.confirmado,
         imagen: user.imagen,
         isProfe:user.isProfe
-      }).then(user => id =user.id_user)
-      console.log(id)
-      return id
+      })
+      return user.id_user
     }
     
     async getProfile(user){//usuario que reciba en user.routes apartado /profile
