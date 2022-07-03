@@ -1,27 +1,33 @@
 const CronJob = require('cron').CronJob
-const { Op } = require("sequelize")
+const { Op } = require('sequelize')
 
-module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel, PropiedadesModel) => {
-  
+module.exports = (
+  EmpresasModel,
+  UserModel,
+  HistoricoCuentaEmpresasModel,
+  HistoricoCuentaParticularesModel,
+  PropiedadesModel
+) => {
   class TaskManager {
-
     constructor() {
       this.crearTareaSemanal()
       // this.tester()
     }
-    
+
     async tester() {
       const empresa = await EmpresasModel.findByPk(1, {
         attributes: {
-          exclude: ['pdfString']
+          exclude: ['pdfString'],
         },
-        include: [{
-          model: PropiedadesModel,
-          as: 'propiedad',
-          attributes: {
-            exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre']
-          }
-        }]
+        include: [
+          {
+            model: PropiedadesModel,
+            as: 'propiedad',
+            attributes: {
+              exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre'],
+            },
+          },
+        ],
       })
       console.log(empresa.toJSON())
     }
@@ -32,37 +38,43 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
         '0 0 * * MON',
         async () => {
           console.log('Pagando nóminas')
-          const users = await UserModel.findAll({ // Alumnos que hayan completado el registro
+          const users = await UserModel.findAll({
+            // Alumnos que hayan completado el registro
             where: {
               id_clase: { [Op.ne]: null },
               id_propiedades: { [Op.ne]: null },
-              rol: 'Alumno'
+              rol: 'Alumno',
             },
-            include: [{
-              model: PropiedadesModel,
-              as: 'propiedad',
-              attributes: {
-                exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre']
-              }
-            }],
+            include: [
+              {
+                model: PropiedadesModel,
+                as: 'propiedad',
+                attributes: {
+                  exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre'],
+                },
+              },
+            ],
             attributes: {
-              exclude: ['pdf', 'imagen', 'expediente', 'nombre', 'apellidos', 'email', 'contrasenia']
-            }
+              exclude: ['pdf', 'imagen', 'expediente', 'nombre', 'apellidos', 'email', 'contrasenia'],
+            },
           })
           for (const user of users) {
-            if (user.id_empresa && empresa) { //? Pago de nóminas
+            if (user.id_empresa && empresa) {
+              //? Pago de nóminas
               // actualizacíón de la empresa
               const empresa = await EmpresasModel.findByPk(user.id_empresa, {
                 attributes: {
-                  exclude: ['pdfString']
+                  exclude: ['pdfString'],
                 },
-                include: [{
-                  model: PropiedadesModel,
-                  as: 'propiedad',
-                  attributes: {
-                    exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre']
-                  }
-                }]
+                include: [
+                  {
+                    model: PropiedadesModel,
+                    as: 'propiedad',
+                    attributes: {
+                      exclude: ['zona', 'municipio', 'distrito', 'img1', 'img2', 'img3', 'Descripcion', 'Nombre'],
+                    },
+                  },
+                ],
               })
               if (empresa) {
                 empresa.SaldoActual -= user.salario
@@ -82,9 +94,10 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                   Importe: user.salario,
                   Comentario: null,
                   tipo_gasto: 'Nómina',
-                  Hora: new Date()
+                  Hora: new Date(),
                 })
-                if (user.rol_juego == 'Empresario' && empresa.propiedad) { //? Gastos de empresarios
+                if (user.rol_juego == 'Empresario' && empresa.propiedad) {
+                  //? Gastos de empresarios
                   empresa.SaldoActual -= empresa.propiedad.precio
                   await HistoricoCuentaEmpresasModel.create({
                     id_empresa: user.id_empresa,
@@ -98,7 +111,8 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                 await empresa.save()
               }
             }
-            if (user.propiedad) { //? Gastos de particulares
+            if (user.propiedad) {
+              //? Gastos de particulares
               // * Propiedades
               user.salarioActual -= user.propiedad.precio
               await HistoricoCuentaParticularesModel.create({
@@ -107,7 +121,7 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                 Importe: user.propiedad.precio,
                 Comentario: null,
                 tipo_gasto: 'Alquiler',
-                Hora: new Date()
+                Hora: new Date(),
               })
               // * Lujo
               user.salarioActual -= 100
@@ -117,7 +131,7 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                 Importe: 100,
                 Comentario: null,
                 tipo_gasto: 'Lujo',
-                Hora: new Date()
+                Hora: new Date(),
               })
               // * Alimentación
               const costeAlimentacion = (100 + user.propiedad.precio) * 0.2
@@ -128,11 +142,11 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
                 Importe: costeAlimentacion,
                 Comentario: null,
                 tipo_gasto: 'Alimentación',
-                Hora: new Date()
+                Hora: new Date(),
               })
             }
             await user.save()
-          }   
+          }
           console.log('Nóminas pagadas')
         },
         null,
@@ -140,9 +154,7 @@ module.exports = (EmpresasModel, UserModel, HistoricoCuentaEmpresasModel, Histor
         'Europe/Madrid'
       )
     }
-
   }
 
   return new TaskManager()
 }
-  
