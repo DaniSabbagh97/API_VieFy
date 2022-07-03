@@ -2,13 +2,9 @@ module.exports = (AntalesModel, EmpresasModel, UserModel) =>{
 
     class Antales {
         async getByClase(id) {
-
             const idClase = id.id_clase
-            console.log(id)
-            console.log(id.id_clase)
-            console.log("OOOOOOOOOOOOOOOO")
             try {
-                if (!idClase) throw new Error('El usuario no esta asignado a una clase')
+                if (!idClase) throw new Error('El usuario no está asignado a una clase')
                 const antales = await AntalesModel.findAll({
                     where: {
                         id_clase: idClase
@@ -18,7 +14,7 @@ module.exports = (AntalesModel, EmpresasModel, UserModel) =>{
                     }, {
                         model: UserModel,
                         attributes: {
-                            exclude: ['contrasenia', 'pdf', 'imagen']
+                            exclude: ['contrasenia', 'pdf']
                         }
                     }]
                 })
