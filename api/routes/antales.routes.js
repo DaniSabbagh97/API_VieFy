@@ -2,9 +2,11 @@ module.exports = (express, checkToken, Antales) => {
 
     const router = express.Router()
 
-    router.get('/', checkToken, async (req, res, next) => {
+    router.post('/get', checkToken, async (req, res, next) => {
         try {
-            const antales = await Antales.getByClase(req.user)
+            console.log(req.body)
+            console.log("UUUUUUUUUUU")
+            const antales = await Antales.getByClase(req.body)
             res.json(antales)
         } catch(e) {
             next(e)

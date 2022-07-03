@@ -8,7 +8,7 @@ module.exports = (database, sequelize) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        Empresa: DataTypes.INTEGER,
+        id_empresa: DataTypes.INTEGER,
         Saldo: DataTypes.FLOAT,
         Gasto: DataTypes.FLOAT,
         Comentario: DataTypes.STRING,
