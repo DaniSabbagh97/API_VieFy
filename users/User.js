@@ -10,6 +10,33 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
       const users = await UserModel.findAll()
       return users
     }
+
+    async setSalario(userObt, usertoken) {
+      console.log(userObt.salario)
+      await UserModel.update({
+        salario: userObt.salario
+      },
+      {
+        where:{
+          id_user: usertoken.id_user
+        },
+        attributes: {
+          exclude: ['imagen', 'contrasenia'],
+        },
+      })
+      return true
+    }
+
+    async getSalario(user) {
+      console.log(user.id_user)
+      const users = await UserModel.findOne({
+        where:{
+          id_user:user.id_user
+        }
+      })
+      console.log(users.id_user)
+      return users
+    }
     
     async createUser(user) {
       const passw = await encrypter(user.contrasenia)

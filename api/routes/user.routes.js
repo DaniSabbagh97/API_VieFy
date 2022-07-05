@@ -6,6 +6,17 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
     const response = await User.get(req.body)
     res.json(response)
   })
+
+  router.get('/getSalario', checkToken, async (req, res, next) => {
+    const response = await User.getSalario(req.user)
+    res.json(response)
+  })
+
+  router.post('/setSalario', checkToken, async (req, res, next) => {
+    console.log(req.body)
+    const response = await User.setSalario(req.body, req.user)
+    res.json(response)
+  })
   
   router.get('/profile', checkToken, async (req, res, next) => {
     const response = await User.getProfile(req.user)
