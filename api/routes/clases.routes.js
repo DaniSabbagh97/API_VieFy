@@ -1,33 +1,26 @@
 module.exports = (express, config, checkToken, Clases) => {
+  const router = express.Router()
 
-    const router = express.Router()
+  router.get('/getClases', checkToken, async (req, res, next) => {
+    const response = await Clases.getClases(req.user)
+    res.json(response)
 
-    router.get('/getClases', checkToken, async (req, res, next) => {
+    console.log(response)
+  })
 
-        const response = await Clases.getClases(req.user)
-        res.json(response)
+  router.post('/crearClases', checkToken, async (req, res, next) => {
+    const response = await Clases.crearClase(req.body, req.user)
+    res.json(response)
+    console.log(response)
+  })
+  
+  router.post('/updateUsos', checkToken, async (req, res, next) => {
+    const response = await Clases.updateUsos(req.body)
+    res.json(response)
+    console.log(response)
+  })
 
-        console.log(response)
-    })
-
-    router.post('/crearClases', checkToken, async (req, res, next) => {
-
-        const response = await Clases.crearClase(req.body, req.user)
-        res.json(response)
-        console.log(response)
-
-    })
-    router.post('/updateUsos', checkToken, async (req, res, next) => {
-
-        const response = await Clases.updateUsos(req.body)
-        res.json(response)
-        console.log(response)
-
-    })
-    
-
-    return router
-
+  return router
 }
 
 // POST http://servidor/api/clases/
