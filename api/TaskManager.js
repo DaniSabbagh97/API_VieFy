@@ -1,5 +1,6 @@
 const CronJob = require('cron').CronJob
 const { Op } = require('sequelize')
+const moment = require('moment')
 
 module.exports = (
   EmpresasModel,
@@ -137,6 +138,13 @@ module.exports = (
                 tipo_gasto: 'Alimentación',
                 Hora: new Date(),
               })
+            }
+            const weekOfYear = moment().week()
+            if (weekOfYear % 3 == 0) { // cada semana 3 del año
+              user.notificacionTrimestral = 1
+            }
+            if (weekOfYear % 12 == 0) { // cada semana 12 del año
+              user.notificacionAnual = 1
             }
             await user.save()
           }

@@ -30,8 +30,8 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
     async getSalario(user) {
       console.log(user.id_user)
       const users = await UserModel.findOne({
-        where:{
-          id_user:user.id_user
+        where: {
+          id_user: user.id_user
         }
       })
       console.log(users.id_user)
