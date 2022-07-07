@@ -53,7 +53,7 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
         imagen: user.imagen,
         isProfe:user.isProfe
       })
-      return user.id_user
+      return 1
     }
     
     async getProfile(user){//usuario que reciba en user.routes apartado /profile
