@@ -1,4 +1,4 @@
-module.exports = (UserModel, EmpresasModel, HistoricoCuentaEmpresas, HistoricoCuentaParticulares) => {
+module.exports = (UserModel, EmpresasModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel) => {
   class Multas {
     /**
      * @param {{ motivo: string, id_user: number, cantidad: number }} multa
