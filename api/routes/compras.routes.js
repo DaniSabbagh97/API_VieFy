@@ -30,7 +30,7 @@ module.exports = (express, checkToken, Compras) => {
 
   router.get('/entregas', checkToken, async (req, res, next) => {
     try {
-      const response = await Compras.obtenerPracticasEntregadas(req.body, req.user)
+      const response = await Compras.obtenerPracticasEntregadas(req.user)
       res.json(response)
     } catch (e) {
       next(e)

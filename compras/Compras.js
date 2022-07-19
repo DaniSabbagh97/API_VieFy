@@ -97,11 +97,12 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
             nota: {
               [Op.is]: null
             },
-            include: [PracticasModel],
           },
+          include: [PracticasModel],
         })
         compras.forEach((compra) => {
           compra.entrega = JSON.parse(compra.entrega)
+          compra.practica.pdf = JSON.parse(compra.practica.pdf)
         })
         return compras
       } catch (e) {
