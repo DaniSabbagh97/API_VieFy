@@ -94,6 +94,9 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
             entrega: {
               [Op.ne]: null,
             },
+            nota: {
+              [Op.is]: null
+            },
             include: [PracticasModel],
           },
         })
@@ -106,19 +109,33 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
       }
     }
 
+    /**
+     * @param {{ id_compra: number, nota: number }} correccion
+     */
     async corregirPractica(correccion, user) {
       try {
-        const compra = await ComprasModel.findOne({
-          where: {
-            id_practica: correccion.id_practica,
-            entrega: {
-              [Op.ne]: null,
-            },
-            include: [PracticasModel],
-          },
+        if (!correccion || !correccion.id_compra || !correccion.nota) throw new Error('Parámetros incorrectos')
+        const compra = await ComprasModel.findByPk(correccion.id_compra, {
+          include: [PracticasModel],
         })
+        if (!compra || !compra.id_empresa) throw new Error('Compra no encontrada o sin empresa asignada')
+        const empresa = await EmpresasModel.findByPk(compra.id_empresa)
+        if (!empresa) throw new Error('La Empresa asignada a la compra no existe')
+        if (compra.practica) {
+          const beneficio = (compra.practica.beneficio / 10) * correccion.nota
+          empresa.SaldoActual += beneficio
+          await HistoricoCuentaEmpresasModel.create({
+            id_empresa: user.id_empresa,
+            Saldo: empresa.SaldoActual,
+            Gasto: beneficio,
+            Comentario: 'Beneficio de práctica ' + practica.nombrePractica,
+            tipo_gasto: 'Beneficio práctica',
+            Hora: new Date(),
+          })
+          await empresa.save()
+        }
       } catch (e) {
-
+        throw e
       }
     }
   }

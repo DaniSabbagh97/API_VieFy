@@ -13,6 +13,7 @@ module.exports = (database, sequelize, EmpresasModel, PracticasModel) => {
       id_practica: DataTypes.INTEGER,
       id_clase: DataTypes.INTEGER,
       entrega: DataTypes.STRING,
+      nota: DataTypes.INTEGER,
     },
     {
       sequelize: database,
