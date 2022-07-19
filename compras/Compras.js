@@ -108,7 +108,21 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
       }
     }
 
-    async corregirPractica() {}
+    async corregirPractica(correccion, user) {
+      try {
+        const compra = await ComprasModel.findOne({
+          where: {
+            id_practica: correccion.id_practica,
+            entrega: {
+              [Op.ne]: null,
+            },
+            include: [PracticasModel],
+          },
+        })
+      } catch (e) {
+
+      }
+    }
   }
 
   return new Compras()

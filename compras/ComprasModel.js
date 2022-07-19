@@ -4,7 +4,7 @@ module.exports = (database, sequelize, EmpresasModel, PracticasModel) => {
 
   Compras.init(
     {
-      id_compras: {
+      id_compra: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
