@@ -85,6 +85,11 @@ const GastosFijosModel = require('./../gastos/GastosFijosModel')(database, seque
 const Multas = require('./../multas/Multas')(UserModel, EmpresasModel, HistoricoCuentaEmpresasModel, HistoricoCuentaParticularesModel)
 const multasRoutes = require('./routes/multas.routes')(express, checkToken, Multas)
 
+// COMPRAS
+const ComprasModel = require('./../compras/ComprasModel')(database, sequelize, EmpresasModel, PracticasModel)
+const Compras = require('./../compras/Compras')(ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEmpresasModel)
+const comprasRoutes = require('./routes/compras.routes')(express, checkToken, Compras)
+
 
 const app = express()
 app.enable('trust proxy')
@@ -106,6 +111,7 @@ app.use('/api/clases', clasesRoutes)
 app.use('/api/practicas', practicasRoutes)
 app.use('/api/antales', antalesRoutes)
 app.use('/api/multas', multasRoutes)
+app.use('/api/compras', comprasRoutes)
 
 app.use(errorHandler)
 
