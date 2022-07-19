@@ -1,4 +1,4 @@
-module.exports = (express, config, checkToken, Compras) => {
+module.exports = (express, checkToken, Compras) => {
   const router = express.Router()
 
   router.post('/', checkToken, async (req, res, next) => {
