@@ -97,12 +97,10 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
             include: [PracticasModel],
           },
         })
-        const practicas = []
         compras.forEach((compra) => {
-          compra.practica.entrega = JSON.parse(compra.entrega)
-          practicas.push(compra.practica)
+          compra.entrega = JSON.parse(compra.entrega)
         })
-        return practicas
+        return compras
       } catch (e) {
         throw e
       }
