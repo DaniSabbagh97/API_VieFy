@@ -57,7 +57,7 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
         })
         const practicas = await PracticasModel.findAll({
           where: {
-            id_practicas: {
+            id_practica: {
               [Op.in]: compras.map((c) => c.id_practica),
             },
           },
