@@ -10,8 +10,17 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
         // Validaciones
         if (!practica) throw new Error('Práctica no encontrada')
         if (!empresa) throw new Error('El ususario no está asignado a una empresa')
+        const compra = await ComprasModel.findOne({
+          where: {
+            id_empresa: user.id_empresa,
+            id_practica: id_practica,
+          },
+          attributes: {
+            exclude: ['emtrega'],
+          },
+        })
 
-        if (empresa.SaldoActual < practica.valorTotal) {
+        if (empresa.SaldoActual < practica.valorTotal || compra) {
           return false
         } else {
           empresa.SaldoActual -= practica.valorTotal
@@ -27,6 +36,7 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
           await ComprasModel.create({
             id_empresa: user.id_empresa,
             id_practica: id_practica,
+            id_clase: user.id_clase,
           })
           return true
         }
@@ -57,6 +67,48 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
         throw e
       }
     }
+
+    async entregarPractica(practica, user) {
+      try {
+        if (!practica || !practica.entrega) throw new Error('Parámetros incorrectos')
+        const compra = await ComprasModel.findOne({
+          where: {
+            id_practica: practica.id_practica,
+            id_empresa: user.id_empresa,
+          },
+        })
+        if (!compra) throw new Error('La empresa del usuario no tiene esa práctica comprada')
+        compra.entrega = JSON.stringify(practica.entrega)
+        await compra.save()
+        return true
+      } catch (e) {
+        throw e
+      }
+    }
+
+    async obtenerPracticasEntregadas(user) {
+      try {
+        const compras = await ComprasModel.findAll({
+          where: {
+            id_clase: user.id_clase,
+            entrega: {
+              [Op.ne]: null,
+            },
+            include: [PracticasModel],
+          },
+        })
+        const practicas = []
+        compras.forEach((compra) => {
+          compra.practica.entrega = JSON.parse(compra.entrega)
+          practicas.push(compra.practica)
+        })
+        return practicas
+      } catch (e) {
+        throw e
+      }
+    }
+
+    async corregirPractica() {}
   }
 
   return new Compras()

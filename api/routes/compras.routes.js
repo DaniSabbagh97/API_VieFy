@@ -19,5 +19,23 @@ module.exports = (express, checkToken, Compras) => {
     }
   })
 
+  router.post('/entrega', checkToken, async (req, res, next) => {
+    try {
+      const response = await Compras.entregarPractica(req.body, req.user)
+      res.json(response)
+    } catch (e) {
+      next(e)
+    }
+  })
+
+  router.get('/entregas', checkToken, async (req, res, next) => {
+    try {
+      const response = await Compras.obtenerPracticasEntregadas(req.body, req.user)
+      res.json(response)
+    } catch (e) {
+      next(e)
+    }
+  })
+
   return router
 }
