@@ -9,6 +9,17 @@ module.exports = (UserModel, TestModel, ClasesModel) => {
       return users
     }
 
+    async getImagen(user){
+      console.log(user.id_user)
+      const users = await UserModel.findOne({
+        where: {
+          id_user: user.id_user,
+        },
+      })
+      console.log(users.id_user)
+      return users
+    }
+
     async setSalario(userObt, usertoken) {
       console.log(userObt.salario)
       await UserModel.update(

@@ -12,6 +12,11 @@ module.exports = (express, config, checkToken, User, HistoricoCuentaParticulares
     res.json(response)
   })
 
+  router.post('/getImagenPerfil', async (req, res, next) => {
+    const response = await User.getImagen(req.body)
+    res.json(response)
+  })
+
   router.post('/setSalario', checkToken, async (req, res, next) => {
     console.log(req.body)
     const response = await User.setSalario(req.body, req.user)
