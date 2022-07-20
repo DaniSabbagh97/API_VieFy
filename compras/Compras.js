@@ -81,11 +81,14 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
       }
     }
 
-    async obtenerPracticasEntregadas(user) {
+    async obtenerPracticasEntregadas(idClase) {
       try {
+        console.log("AAAAAAAAAAAAAAAAAAA")
+        console.log(idClase.id_clase)
         const compras = await ComprasModel.findAll({
+          
           where: {
-            id_clase: user.id_clase,
+            id_clase: idClase.id_clase,
             entrega: {
               [Op.ne]: null,
             },
