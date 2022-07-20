@@ -51,10 +51,11 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
           where: {
             id_empresa: user.id_empresa,
           },
-          attributes: {
-            exclude: ['id_compra', 'id_empresa'],
-          },
           include: [PracticasModel],
+        })
+        compras.forEach((compra) => {
+          compra.entrega = JSON.parse(compra.entrega)
+          compra.practica.pdf = JSON.parse(compra.practica.pdf)
         })
         return compras
       } catch (e) {
