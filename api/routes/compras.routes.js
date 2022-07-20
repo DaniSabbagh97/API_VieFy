@@ -37,5 +37,14 @@ module.exports = (express, checkToken, Compras) => {
     }
   })
 
+  router.post('/corregir', checkToken, async (req, res, next) => {
+    try {
+      const response = await Compras.corregirPractica(req.body, req.user)
+      res.json(response)
+    } catch (e) {
+      next(e)
+    }
+  })
+
   return router
 }

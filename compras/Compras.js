@@ -124,11 +124,16 @@ module.exports = (ComprasModel, EmpresasModel, PracticasModel, HistoricoCuentaEm
             id_empresa: user.id_empresa,
             Saldo: empresa.SaldoActual,
             Gasto: beneficio,
-            Comentario: 'Beneficio de práctica ' + practica.nombrePractica,
+            Comentario: 'Beneficio de práctica ' + compra.practica.nombrePractica,
             tipo_gasto: 'Beneficio práctica',
             Hora: new Date(),
           })
           await empresa.save()
+          compra.nota = correccion.nota
+          await compra.save()
+          return true
+        } else {
+          return false
         }
       } catch (e) {
         throw e
